@@ -1,14 +1,18 @@
 package com.lambdaschool.bookstore.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@ApiModel(value = "Author", description = "The Author Entity")
 @Entity
 @Table(name = "author")
 public class Author extends Auditable {
+    @ApiModelProperty(name = "authorid", value = "Primary Key for Author", required = true, example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long authorid;

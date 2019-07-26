@@ -6,6 +6,7 @@ import com.lambdaschool.bookstore.models.Book;
 import com.lambdaschool.bookstore.repository.AuthorRepository;
 import com.lambdaschool.bookstore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,10 +22,10 @@ public class BookServiceImpl implements BookService {
     private AuthorRepository authorrepos;
 
     @Override
-    public List<Book> findAll()
+    public List<Book> findAll(Pageable pageable)
     {
         List<Book> list = new ArrayList<>();
-        bookrepos.findAll().iterator().forEachRemaining(list::add);
+        bookrepos.findAll(pageable).iterator().forEachRemaining(list::add);
         return list;
     }
 
@@ -55,12 +56,20 @@ public class BookServiceImpl implements BookService {
         Book b = bookrepos.findById(bookid).orElseThrow(() -> new ResourceNotFoundException(Long.toString(bookid)));
         Author a = authorrepos.findById(authorid).orElseThrow(() -> new ResourceNotFoundException(Long.toString(authorid)));
 
-        List<Author> bookAuthors = new ArrayList<>();
-        b.getAuthors().iterator().forEachRemaining(bookAuthors::add);
-        bookAuthors.add(a);
+        if (b.getAuthors() != null) {
+            List<Author> bookAuthors = new ArrayList<>();
+            b.getAuthors().iterator().forEachRemaining(bookAuthors::add);
+            bookAuthors.add(a);
+            b.setAuthors(bookAuthors);
 
-        b.setAuthors(bookAuthors);
-        return bookrepos.save(b);
+            return bookrepos.save(b);
+        } else {
+            List<Author> bookAuthors = new ArrayList<>();
+            bookAuthors.add(a);
+            b.setAuthors(bookAuthors);
+
+            return bookrepos.save(b);
+        }
     }
 
     @Override
