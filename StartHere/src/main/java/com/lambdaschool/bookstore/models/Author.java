@@ -56,4 +56,12 @@ public class Author extends Auditable {
     public void setFirstname(String firstname) {
         this.fname = firstname;
     }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 }

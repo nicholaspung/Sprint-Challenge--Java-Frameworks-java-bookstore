@@ -39,8 +39,6 @@ public class BookServiceImpl implements BookService {
     public Book update(Book newBook, long id) {
         Book currentBook = bookrepos.findById(id).orElseThrow(() -> new EntityNotFoundException(Long.toString(id)));
 
-
-
         if (newBook.getBooktitle() != null) {
             currentBook.setBooktitle(newBook.getBooktitle());
         }
@@ -58,20 +56,18 @@ public class BookServiceImpl implements BookService {
         Book b = bookrepos.findById(bookid).orElseThrow(() -> new ResourceNotFoundException(Long.toString(bookid)));
         Author a = authorrepos.findById(authorid).orElseThrow(() -> new ResourceNotFoundException(Long.toString(authorid)));
 
-        if (b.getAuthors() != null) {
-            List<Author> bookAuthors = new ArrayList<>();
-            b.getAuthors().iterator().forEachRemaining(bookAuthors::add);
-            bookAuthors.add(a);
-            b.setAuthors(bookAuthors);
+        List<Author> bookAuthors = new ArrayList<>();
+        b.getAuthors().iterator().forEachRemaining(bookAuthors::add);
+        bookAuthors.add(a);
+        b.setAuthors(bookAuthors);
 
-            return bookrepos.save(b);
-        } else {
-            List<Author> bookAuthors = new ArrayList<>();
-            bookAuthors.add(a);
-            b.setAuthors(bookAuthors);
+        List<Book> authorBooks = new ArrayList<>();
+        a.getBooks().iterator().forEachRemaining(authorBooks::add);
+        authorBooks.add(b);
+        a.setBooks(authorBooks);
 
-            return bookrepos.save(b);
-        }
+        authorrepos.save(a);
+        return bookrepos.save(b);
     }
 
     @Override
