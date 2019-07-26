@@ -39,6 +39,8 @@ public class BookServiceImpl implements BookService {
     public Book update(Book newBook, long id) {
         Book currentBook = bookrepos.findById(id).orElseThrow(() -> new EntityNotFoundException(Long.toString(id)));
 
+
+
         if (newBook.getBooktitle() != null) {
             currentBook.setBooktitle(newBook.getBooktitle());
         }
