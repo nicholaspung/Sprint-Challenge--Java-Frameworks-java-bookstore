@@ -68,4 +68,20 @@ public class Book extends Auditable {
     public void setCopy(int copy) {
         this.copy = copy;
     }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public Section getSection() {
+        return section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
+    }
 }

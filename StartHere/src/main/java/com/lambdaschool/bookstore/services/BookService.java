@@ -6,4 +6,12 @@ import java.util.List;
 
 public interface BookService {
     List<Book> findAll();
+
+    Book findBookById(long id);
+
+    Book update(Book book, long id);
+
+    Book addAuthor(long bookid, long authorid);
+
+    void delete(long id);
 }
